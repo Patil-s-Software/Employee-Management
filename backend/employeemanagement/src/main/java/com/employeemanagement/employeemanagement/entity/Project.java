@@ -1,34 +1,35 @@
 package com.employeemanagement.employeemanagement.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Setter
-@Getter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-public class Employee {
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
-    
-    @Column(unique = true)
-    private String email;
-
-    private Role role = Role.EMPLOYEE;
-
     @Column(nullable = false)
-    private String password;
+    private String projectName;
 
-    private String address;
+    private String description;
+
+    private LocalDate starDate;
+
+    private LocalDate endDate;
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private User manager;
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class EmployeeDto {
+public class UserDto {
     @NotEmpty(message = "Please enter name")
 
     private String name;
@@ -21,4 +21,10 @@ public class EmployeeDto {
     
     @NotEmpty(message = "Please enter password")
     private String password;
+
+    private String department;
+
+    private String designation;
+
+    private String profilePic;
 }

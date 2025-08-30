@@ -5,30 +5,33 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.employeemanagement.employeemanagement.dto.EmployeeDto;
-import com.employeemanagement.employeemanagement.entity.Employee;
+import com.employeemanagement.employeemanagement.dto.UserDto;
+import com.employeemanagement.employeemanagement.entity.User;
 import com.employeemanagement.employeemanagement.entity.Role;
 import com.employeemanagement.employeemanagement.exception.DuplicateEntry;
 import com.employeemanagement.employeemanagement.exception.NotFoundException;
-import com.employeemanagement.employeemanagement.repository.EmployeeRepo;
+import com.employeemanagement.employeemanagement.repository.UserRepo;
 
 @Service
-public class EmployeeService {
+public class UserService {
 
     @Autowired
-    EmployeeRepo employeeRepo;
+    UserRepo employeeRepo;
 
-    public List<Employee> getAllEmployees(){
+    public List<User> getAllEmployees(){
         return employeeRepo.findAll();
     }
 
-    public EmployeeDto creaEmployee(EmployeeDto employeeDto){
-        Employee employee = new Employee();
+    public UserDto creaEmployee(UserDto employeeDto){
+        User employee = new User();
         employee.setName(employeeDto.getName());
         employee.setEmail(employeeDto.getEmail());
         employee.setAddress(employeeDto.getAddress());
         employee.setRole(Role.EMPLOYEE);
         employee.setPassword(employeeDto.getPassword());
+        employee.setDepartment(employeeDto.getDepartment());
+        employee.setDesignation(employeeDto.getDesignation());
+        employee.setProfilePic(employeeDto.getProfilePic());
 
         if(employeeRepo.findByEmail(employeeDto.getEmail()).isPresent()){
             throw new DuplicateEntry("Email " + employeeDto.getEmail());
@@ -47,11 +50,13 @@ public class EmployeeService {
         }
     }
 
-    public EmployeeDto updateEmployee(EmployeeDto employeeDto, Integer id){
-        Employee employee = employeeRepo.findById(id).orElseThrow(()-> new NotFoundException("Employee not found with id: " + id));
+    public UserDto updateEmployee(UserDto employeeDto, Integer id){
+        User employee = employeeRepo.findById(id).orElseThrow(()-> new NotFoundException("Employee not found with id: " + id));
         if (employeeDto.getName() != null) employee.setName(employeeDto.getName());
         if(employeeDto.getAddress() != null) employee.setAddress(employeeDto.getAddress());
-
+        if(employeeDto.getDepartment() != null) employee.setDepartment(employeeDto.getDepartment());
+        if (employeeDto.getAddress() != null) employee.setDesignation(employeeDto.getDesignation());
+        if (employeeDto.getProfilePic() != null) employee.setProfilePic(employeeDto.getProfilePic());
         employeeRepo.save(employee);
         return employeeDto;
     }
