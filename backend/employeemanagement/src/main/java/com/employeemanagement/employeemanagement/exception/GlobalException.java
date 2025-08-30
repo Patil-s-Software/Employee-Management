@@ -29,4 +29,9 @@ public class GlobalException {
     public ResponseEntity<String> notFoundException(NotFoundException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_GATEWAY);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> userNotFoundException(UserNotFoundException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

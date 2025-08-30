@@ -9,5 +9,5 @@ import com.employeemanagement.employeemanagement.entity.User;
 public interface UserRepo extends JpaRepository<User, Integer>{
 
     public Optional<User> findByEmail(String email);
-    
+    public Optional<User> findById(Integer id);
 }

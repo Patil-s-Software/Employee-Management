@@ -4,9 +4,15 @@ import com.employeemanagement.employeemanagement.entity.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserDto {
     @NotEmpty(message = "Please enter name")
 
@@ -17,7 +23,7 @@ public class UserDto {
     @Email(message = "Please enter a valid email address")
     private String email;
     
-    private Role role = Role.EMPLOYEE;
+    private Role role;
     
     @NotEmpty(message = "Please enter password")
     private String password;

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.employeemanagement.employeemanagement.dto.UserDto;
 import com.employeemanagement.employeemanagement.entity.User;
-import com.employeemanagement.employeemanagement.services.UserService;
+import com.employeemanagement.employeemanagement.services.serviceImpl.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -22,29 +22,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("api/users")
 public class UserController {
 
     @Autowired
-    UserService employeeService;
+    UserServiceImpl userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllEmployee(){
-        return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
-    }    
+    public ResponseEntity<List<UserDto>> getAllEmployee(){
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
 
-    @PostMapping
-    public ResponseEntity<UserDto> createEmployee(@Valid @RequestBody UserDto employeeDto) {
-        return new ResponseEntity<>(employeeService.creaEmployee(employeeDto), HttpStatus.CREATED);
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Integer id){
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateEmployee(@PathVariable Integer id, @RequestBody UserDto employeeDto) {
-        return new ResponseEntity<>(employeeService.updateEmployee(employeeDto, id), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(userService.updateUser(id, employeeDto), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable Integer id){
-        return new ResponseEntity<>(employeeService.deleteEmployee(id), HttpStatus.GONE);
+        userService.deleteUser(id);
+        return new ResponseEntity<>("Deleted Success", HttpStatus.GONE);
     }
 }
