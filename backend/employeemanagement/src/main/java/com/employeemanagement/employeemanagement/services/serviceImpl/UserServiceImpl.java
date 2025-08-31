@@ -1,7 +1,6 @@
 package com.employeemanagement.employeemanagement.services.serviceImpl;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import com.employeemanagement.employeemanagement.repository.UserRepo;
 import com.employeemanagement.employeemanagement.services.UserService;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     UserRepo userRepository;
 
@@ -35,15 +34,15 @@ public class UserServiceImpl implements UserService{
                         .designation(user.getDesignation())
                         .role(user.getRole())
                         .profilePic(user.getProfilePic())
-                        .build()
-                ).toList();
+                        .build())
+                .toList();
     }
-
 
     @Override
     public UserDto getUserById(Integer id) {
         System.out.println("users");
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("user not found with id: " + id));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("user not found with id: " + id));
         UserDto userDto = new UserDto();
         userDto.setName(user.getName());
         userDto.setAddress(user.getAddress());
@@ -65,7 +64,6 @@ public class UserServiceImpl implements UserService{
         user.setAddress(userDTO.getAddress());
         user.setEmail(userDTO.getEmail());
         user.setRole(userDTO.getRole());
-        // user.setPassword(userDTO.getPassword());  // ⚠️ better to hash before saving
         user.setDesignation(userDTO.getDesignation());
         user.setProfilePic(userDTO.getProfilePic());
 
@@ -78,8 +76,7 @@ public class UserServiceImpl implements UserService{
                 .address(updatedUser.getAddress())
                 .email(updatedUser.getEmail())
                 .role(updatedUser.getRole())
-                // .password(updatedUser.getPassword()) // ⚠️ again, not good in response
-                // .department(updatedUser.getDepartment() != null ? updatedUser.getDepartment().getName() : null)
+                .department(updatedUser.getDepartment() != null ? updatedUser.getDepartment() : null)
                 .designation(updatedUser.getDesignation())
                 .profilePic(updatedUser.getProfilePic())
                 .build();
