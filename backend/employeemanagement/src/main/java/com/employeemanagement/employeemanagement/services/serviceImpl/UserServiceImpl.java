@@ -3,6 +3,10 @@ package com.employeemanagement.employeemanagement.services.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.employeemanagement.employeemanagement.dto.UserDto;
@@ -17,25 +21,26 @@ public class UserServiceImpl implements UserService {
     UserRepo userRepository;
 
     @Override
+    @CacheEvict(value = "users")
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-
-        return users.stream()
-                .map(user -> UserDto.builder()
-                        .name(user.getName())
-                        .address(user.getAddress())
-                        .email(user.getEmail())
-                        .department(user.getDepartment())
-                        .designation(user.getDesignation())
-                        .role(user.getRole())
-                        .profilePic(user.getProfilePic())
-                        .build())
-                .toList();
+    @Cacheable(value = "users")
+    public Page<UserDto> getAllUsers(Pageable pageable) {
+        System.out.println("Called\n\n\n\n\n");
+        return userRepository.findAll(pageable)
+                                .map(user -> UserDto.builder()
+                                .name(user.getName())
+                                .address(user.getAddress())
+                                .email(user.getEmail())
+                                .department(user.getDepartment())
+                                .designation(user.getDesignation())
+                                .role(user.getRole())
+                                .profilePic(user.getProfilePic())
+                                .build()
+                            );
     }
 
     @Override
@@ -54,6 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "users")
     public UserDto updateUser(Integer id, UserDto userDTO) {
         // 1️⃣ Find user by id
         User user = userRepository.findById(id)
