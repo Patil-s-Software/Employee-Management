@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class EmployeemanagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmployeemanagementApplication.class, args) ;
+		SpringApplication.run(EmployeemanagementApplication.class, args);
 	}
 
 	@Bean
